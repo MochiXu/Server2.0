@@ -1,0 +1,234 @@
+create
+    definer = xmc@`%` procedure calculate_Average_Scenic(IN time_begin time, IN time_end time, IN date_in date)
+begin
+    select sum(person_sum)/count(*)
+    from scenic_person_sum
+    where record_date=date_in and record_time>=time_begin and record_time<=time_end;
+end;
+
+create
+    definer = xmc@`%` procedure calculate_Average_Scenic_Daily(IN date_in date)
+begin
+    select sum(person_sum)/count(*)
+    from scenic_person_sum
+    where record_date=date_in;
+end;
+
+create
+    definer = xmc@`%` procedure calculate_Average_Scenic_Daily_Forecast(IN date_in date)
+begin
+    select (sum(person_count)/count(*))*4
+    from flow_forecast
+    where record_date=date_in;
+end;
+
+create
+    definer = xmc@`%` procedure del_Sms_verification(IN time_in time, IN date_in date)
+begin
+    delete from sms_verification
+        where record_time<=time_in and record_date<=date_in;
+end;
+
+create
+    definer = xmc@`%` procedure get_Current_Flow_Scenic(IN scenic_id_in varchar(255))
+begin
+    select person_count
+        from flow_actual_time
+            where record_time=(select max(record_time)from flow_actual_time where record_date=(select max(record_date)from flow_actual_time))
+            and record_date=(select max(record_date)from flow_actual_time)
+            and scenic_id=scenic_id_in;
+end;
+
+create
+    definer = xmc@`%` procedure get_Current_Scenic_Sum()
+begin
+    select person_sum
+from scenic_person_sum
+where record_time=(select max(record_time)from scenic_person_sum where record_date=(select max(record_date)from scenic_person_sum))
+and record_date=(select max(record_date)from scenic_person_sum);
+end;
+
+create
+    definer = xmc@`%` procedure get_DeviceRoundTime(IN device_id_in varchar(255), IN scenic_id_in varchar(255))
+begin
+    if device_id_in in (select uav_id from uav_detail)
+    then
+        select scenic_uav.uav_round_time
+        from scenic_uav
+        where scenic_uav.uav_id = device_id_in
+          and scenic_uav.scenic_id = scenic_id_in;
+    elseif device_id_in in (select spot_id from spot_detail)
+    then
+        select spot_detail.spot_round_time
+        from spot_detail
+        where spot_detail.spot_id = device_id_in;
+    end if;
+end;
+
+create
+    definer = xmc@`%` procedure get_Json4_chart3(IN date_end date)
+begin
+    select m.record_date, max(m.person_sum)
+    from (select record_date as record_date,record_time as record_time, sum(person_count) as person_sum from flow_forecast
+group by record_time,record_date) as m
+    where record_date <= date_end
+    group by m.record_date;
+end;
+
+create
+    definer = xmc@`%` procedure get_Json_chart1()
+begin
+    select scenic_info.scenic_id, scenic_info.scenic_name, flow_actual_time.person_count
+    from scenic_info,
+         flow_actual_time
+    where scenic_info.scenic_id = flow_actual_time.scenic_id
+      and flow_actual_time.record_time =
+          (select max(flow_actual_time.record_time)
+           from flow_actual_time
+           where flow_actual_time.record_date = (select max(record_date) from flow_actual_time))
+      and flow_actual_time.record_date = (select max(flow_actual_time.record_date) from flow_actual_time);
+end;
+
+create
+    definer = xmc@`%` procedure get_Json_chart2(IN scenic_id_in varchar(255))
+begin
+select max(person_actual_location.record_time), min(person_actual_location.record_time),TimeStampDiff(MINUTE,min(person_actual_location.record_time),max(person_actual_location.record_time)),person_ip,scenic_id
+from person_actual_location
+where scenic_id=scenic_id_in
+group by person_ip,scenic_id;
+end;
+
+create
+    definer = xmc@`%` procedure get_Json_chart3(IN date_begin date)
+begin
+    select scenic_person_sum.record_date, max(scenic_person_sum.person_sum)
+    from scenic_person_sum
+    where record_date > date_begin
+    group by scenic_person_sum.record_date;
+end;
+
+create
+    definer = xmc@`%` procedure get_Json_chart4()
+begin
+    select count(*), scenic_name
+    from person_help,
+         scenic_info
+    where person_help.record_date = (select max(person_help.record_date) from person_help)
+      and scenic_info.scenic_id = person_help.scenic_id
+    group by scenic_info.scenic_name;
+end;
+
+create
+    definer = xmc@`%` procedure get_Json_map1_spot()
+begin
+    # 获取scenic_flow内最大日期下的监控设备更新的最新时间
+    declare max_time time ;
+    set max_time=(select max(record_time) from scenic_flow,spot_detail where data_source=spot_id and record_date=(select max(record_date) from scenic_flow));
+
+    select scenic_flow.spot_lng,scenic_flow.spot_lat,scenic_flow.person_count
+    from scenic_flow,spot_detail
+        where scenic_flow.data_source=spot_detail.spot_id and
+              scenic_flow.record_time=max_time
+    and scenic_flow.record_date=(select max(scenic_flow.record_date) from scenic_flow);
+end;
+
+create
+    definer = xmc@`%` procedure get_Json_map1_uav()
+begin
+    # 获取scenic_flow内最大日期下的最大时间，也就是系统记录的最新时间
+    declare max_time time ;
+    set max_time=(select max(scenic_flow.record_time) from scenic_flow where scenic_flow.record_date=(select max(record_date) from scenic_flow));
+
+    select scenic_flow.spot_lng,scenic_flow.spot_lat,scenic_flow.person_count
+        from scenic_flow,scenic_uav
+            where scenic_flow.scenic_id=scenic_uav.scenic_id and
+                  TIMESTAMPDIFF(second ,scenic_flow.record_time,max_time)<(scenic_uav.uav_round_time/1000)
+                    and scenic_flow.record_date=(select max(scenic_flow.record_date) from scenic_flow) and scenic_flow.data_source=scenic_uav.uav_id;
+end;
+
+create
+    definer = xmc@`%` procedure get_Json_map3_quickapp_location(IN time_in time)
+begin
+    select YY.record_date,YY.record_time,YY.person_ip,YY.person_lng,YY.person_lat
+from person_actual_location as YY,(select max(record_time) as TT,person_ip from person_actual_location as GG where record_date=(select max(record_date) from person_actual_location) group by person_ip) as GG
+where GG.person_ip=YY.person_ip and GG.TT=YY.record_time and YY.record_date=(select max(record_date) from person_actual_location) and YY.record_time>time_in
+group by YY.person_ip;
+end;
+
+create
+    definer = xmc@`%` procedure get_OldDays_visit_count(IN scenic_id_in varchar(255), IN begin_date date)
+begin
+    select sum(person_count)
+    from flow_actual_time
+    where scenic_id=scenic_id_in and record_date>=begin_date;
+end;
+
+create
+    definer = xmc@`%` procedure get_Scenic_actualPersonCount()
+begin
+    select person_sum
+    from scenic_person_sum
+    where scenic_person_sum.record_date = (select max(record_date) from scenic_person_sum)
+      and scenic_person_sum.record_time = (select max(record_time)
+                                           from scenic_person_sum
+                                           where scenic_person_sum.record_date =
+                                                 (select max(record_date) from scenic_person_sum));
+end;
+
+create
+    definer = xmc@`%` procedure get_Scenic_maxPersonCount()
+begin
+    select max(person_sum)
+    from scenic_person_sum
+    where scenic_person_sum.record_date = (select max(record_date) from scenic_person_sum);
+end;
+
+create
+    definer = xmc@`%` procedure get_scenic_person_sum_begin_end_time()
+begin
+    select max(scenic_person_sum.record_time),min(scenic_person_sum.record_time),scenic_person_sum.record_date
+        from scenic_person_sum
+            where scenic_person_sum.record_date=(select max(scenic_person_sum.record_date) from scenic_person_sum);
+end;
+
+create
+    definer = xmc@`%` procedure get_ScenicFlowDeviceIdFromScenicID(IN time_in time, IN scenic_id_in varchar(255))
+begin
+    select distinct(scenic_flow.data_source)
+    from scenic_flow
+    where record_time >= time_in
+      and record_time <= (select max(record_time)
+                          from scenic_flow
+                          where record_date = (select max(record_date) from scenic_flow))
+      and record_date = (select max(record_date) from scenic_flow)
+      and scenic_id = scenic_id_in;
+end;
+
+create
+    definer = xmc@`%` procedure get_ScenicFlowScenicID(IN time_in time)
+begin
+    select distinct (scenic_flow.scenic_id)
+    from scenic_flow
+    where record_time >= time_in
+      and record_time <= (select max(record_time)
+                          from scenic_flow
+                          where record_date = (select max(record_date) from scenic_flow))
+      and record_date = (select max(record_date) from scenic_flow);
+end;
+
+create
+    definer = xmc@`%` procedure get_ScenicPersonAllCount_DeviceID(IN time_in time, IN device_id_in varchar(255),
+                                                                  IN scenic_id_in varchar(255))
+begin
+    select sum(m.person_count)
+    from (select *
+          from scenic_flow
+          where record_time >= time_in
+            and record_time <= (select max(record_time)
+                                from scenic_flow
+                                where record_date = (select max(record_date) from scenic_flow))
+            and record_date = (select max(record_date) from scenic_flow)) as m
+    where m.data_source = device_id_in
+      and m.scenic_id = scenic_id_in;
+end;
+

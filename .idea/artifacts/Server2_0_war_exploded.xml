@@ -1,0 +1,48 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Server2.0:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Server2_0_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Server2.0/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Server2.0" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$PROJECT_DIR$/../sms-jar/qcloudsms-1.0.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../json-jar/commons-logging-1.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../json-jar/commons-lang-2.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../json-jar/ezmorph-1.0.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../json-jar/commons-beanutils-1.9.4.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../json-jar/commons-collections-3.2.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../json-jar/json-lib-2.4-jdk15.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../mysql-connector-java-8.0.18.jar" />
+          <element id="file-copy" path="D:/Environment/jar-external/aliyun_java_sdk_3.8.0/aliyun-sdk-oss-3.8.0.jar" />
+          <element id="file-copy" path="D:/Environment/jar-external/aliyun_java_sdk_3.8.0/lib/jdom-1.1.jar" />
+          <element id="file-copy" path="D:/Environment/jar-external/aliyun_java_sdk_3.8.0/lib/httpcore-4.4.1.jar" />
+          <element id="file-copy" path="D:/Environment/jar-external/aliyun_java_sdk_3.8.0/lib/httpclient-4.4.1.jar" />
+          <element id="file-copy" path="D:/Environment/jar-external/aliyun_java_sdk_3.8.0/lib/commons-codec-1.9.jar" />
+          <element id="file-copy" path="D:/Environment/jar-external/aliyun_java_sdk_3.8.0/lib/hamcrest-core-1.1.jar" />
+          <element id="file-copy" path="D:/Environment/jar-external/aliyun_java_sdk_3.8.0/lib/commons-logging-1.2.jar" />
+          <element id="file-copy" path="D:/Environment/jar-external/commons-codec-1.14.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/sms-jar/qcloudsms-1.0.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/json-jar/commons-beanutils-1.9.4.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/json-jar/commons-collections-3.2.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/json-jar/commons-lang-2.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/json-jar/commons-logging-1.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/json-jar/ezmorph-1.0.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/json-jar/json-lib-2.4-jdk15.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/commons-codec-1.14.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/aliyun_java_sdk_3.8.0/lib/jdom-1.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/aliyun_java_sdk_3.8.0/lib/httpcore-4.4.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/aliyun_java_sdk_3.8.0/lib/httpclient-4.4.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/aliyun_java_sdk_3.8.0/lib/commons-codec-1.9.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/aliyun_java_sdk_3.8.0/lib/hamcrest-core-1.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/aliyun_java_sdk_3.8.0/lib/commons-logging-1.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/aliyun_java_sdk_3.8.0/aliyun-sdk-oss-3.8.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/mysql-connector-java-8.0.18.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/other/commons-fileupload-1.4.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

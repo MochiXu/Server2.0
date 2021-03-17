@@ -1,0 +1,419 @@
+/**
+ * Created by 30947 on 2018/7/18.
+ */
+$(function () {
+
+    char1();
+    char2();
+    char3();
+    char4();
+
+});
+
+//统计分析图
+function char1() {
+
+    var myChart = echarts.init($("#char1")[0]);
+
+    //设置数组，记录景区景点名称【更新频率：每十分钟】
+    var data_legend = new Array();
+    data_legend[0] = '景点A'
+    data_legend[1] = '景点B'
+    data_legend[2] = '景点C'
+    data_legend[3] = '景点D'
+    setInterval(function () {
+        //1.创建XMLHttpRequest对象
+        var request = new XMLHttpRequest();
+        //2.发送请求
+        request.open('get', 'http://localhost:8080/Server2_0_war_exploded/Servlet_index_charts?chart=1', true);
+        request.send();
+        //3.监听
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
+                //声明一个json数组对象，用于图表data
+                var jsonData = [];
+                //获取从后端接受的json字符串
+                var XHR = request.responseText;
+                //解析json字符串，使其成为json对象
+                var objs = eval(XHR);
+
+                //对图表内的两组数据进行赋值
+                for (var j = 0; j < objs.length; j++) {
+                    var json = {};//临时json变量
+                    data_legend[j] = objs[j].scenic_name;
+                    json.value = objs[j].person_count;
+                    json.name = objs[j].scenic_name;
+                    jsonData.push(json)
+                }
+                option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'right',
+                        textStyle: {
+                            color: '#ffffff',
+
+                        },
+                        data: data_legend
+                    },
+
+                    calculable: false,
+                    series: [
+                        {
+                            name: '景点名称',
+                            type: 'pie',
+                            radius: ['40%', '70%'],
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        show: false
+                                    },
+                                    labelLine: {
+                                        show: false
+                                    }
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: true,
+                                        position: 'center',
+                                        textStyle: {
+                                            fontSize: '20',
+                                            fontWeight: 'bold'
+                                        }
+                                    }
+                                }
+                            },
+                            data: jsonData
+                        }
+                    ]
+                };
+
+                myChart.setOption(option);
+                window.addEventListener('resize', function () {
+                    myChart.resize();
+                })
+            }
+        };
+
+
+
+    }, 3000);
+
+
+}
+
+function char2() {
+
+    var myChart = echarts.init($("#char2")[0]);
+
+    setInterval(function () {
+        //1.创建XMLHttpRequest对象
+        var request = new XMLHttpRequest();
+        //2.发送请求
+        request.open('get', 'http://localhost:8080/Server2_0_war_exploded/Servlet_index_charts?chart=2', true);
+        request.send();
+        //3.监听
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
+                //声明一个json数组对象，用于图表data
+                //声明四个数组对象，存储随机获取到的四个景点游客游玩时长数据
+                var arrScenicName=new Array();
+                var arrScenic01 = new Array();
+                var arrScenic02 = new Array();
+                var arrScenic03 = new Array();
+                var arrScenic04 = new Array();
+                //获取从后端接受的json字符串
+                var XHR = request.responseText;
+                //alert(XHR);
+                //解析json字符串，使其成为json对象
+                var objs = eval(XHR);
+                //对图表内的两组数据进行赋值
+                for (var j = 0; j < objs.length; j++) {
+                    arrScenicName.push(objs[j].scenic_name);
+                    arrScenic01.push(objs[j].h01);
+                    arrScenic02.push(objs[j].h02);
+                    arrScenic03.push(objs[j].h03);
+                    arrScenic04.push(objs[j].h04);
+                }
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    grid: {show: 'true', borderWidth: '0'},
+                    legend: {
+                        data: ['<1h', '1h~2h', '2h~3h', '>3h'],
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    },
+
+                    calculable: false,
+                    xAxis: [
+                        {
+                            type: 'value',
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: ['#f2f2f2'],
+                                    width: 0,
+                                    type: 'solid'
+                                }
+                            }
+
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'category',
+                            data: arrScenicName,
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    width: 0,
+                                    type: 'solid'
+                                }
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '<1h',
+                            type: 'bar',
+                            stack: '总量',
+                            itemStyle: {normal: {label: {show: true, position: 'insideRight'}}},
+                            data: arrScenic01
+                        },
+                        {
+                            name: '1h~2h',
+                            type: 'bar',
+                            stack: '总量',
+                            itemStyle: {normal: {label: {show: true, position: 'insideRight'}}},
+                            data: arrScenic02
+                        },
+                        {
+                            name: '2h~3h',
+                            type: 'bar',
+                            stack: '总量',
+                            itemStyle: {normal: {label: {show: true, position: 'insideRight'}}},
+                            data: arrScenic03
+                        },
+                        {
+                            name: '>3h',
+                            type: 'bar',
+                            stack: '总量',
+                            itemStyle: {normal: {label: {show: true, position: 'insideRight'}}},
+                            data: arrScenic04
+                        }
+
+                    ]
+                };
+                myChart.setOption(option);
+                window.addEventListener('resize', function () {myChart.resize();})
+
+
+            }
+        }
+    }, 3000);
+
+
+}
+
+function char3() {
+
+    var myChart = echarts.init($("#char3")[0]);
+
+    setInterval(function () {
+        //1.创建XMLHttpRequest对象
+        var request = new XMLHttpRequest();
+        //2.发送请求
+        request.open('get', 'http://localhost:8080/Server2_0_war_exploded/Servlet_index_charts?chart=3', true);
+        request.send();
+        //3.监听
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
+                //声明两个数组对象，一个用于存储横坐标数据，另一个用于存储图表数据
+                var arrDate = new Array();
+                var arrPeak = new Array();
+                //获取从后端接受的json字符串
+                var XHR = request.responseText;
+                //解析json字符串，使其成为json对象
+                var objs = eval(XHR);
+                //对图表内的两组数据进行赋值
+                for (var j = 0; j < objs.length; j++) {
+                    arrDate.push(objs[j].date);
+                    arrPeak.push(objs[j].peak_num);
+                }
+                option = {
+                    legend: {
+                        data: ['日客流量峰值'],
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: "日客流量峰值: <br/>{b} : {c}"
+                    },
+                    grid: {
+                        borderWidth: 0
+                    },
+                    xAxis: {
+                        type: 'category',
+                        splitLine: {show: false},
+                        axisLabel: {                 //坐标轴刻度标签的相关设置
+                            show: true,              //是否显示
+                            interval: "auto",        //坐标轴刻度标签的显示间隔，在类目轴中有效。默认会采用标签不重叠的策略间隔显示标签。可以设置成 0 强制显示所有标签。如果设置为 1，表示『隔一个标签显示一个标签』，如果值为 2，表示隔两个标签显示一个标签，以此类推
+                            rotate: 45,              //刻度标签旋转的角度，在类目轴的类目标签显示不下的时候可以通过旋转防止标签之间重叠。旋转的角度从 -90 度到 90 度
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        data: arrDate
+                    },
+                    yAxis: {
+                        type: 'value',
+                        splitLine: {show: false},
+                        axisLabel: {
+                            formatter: '{value} 人次',
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '日客流量峰值',
+                        data: arrPeak,
+                        type: 'line',
+                        smooth: true
+                    }]
+                };
+                myChart.setOption(option);
+                window.addEventListener('resize', function () {
+                    myChart.resize();
+                })
+            }
+        }
+
+    }, 3000);
+
+
+}
+
+function char4() {
+
+    var myChart = echarts.init($("#char4")[0]);
+
+    setInterval(
+        function () {
+            //1.创建XMLHttpRequest对象
+            var request = new XMLHttpRequest();
+            //2.发送请求
+            request.open('get', 'http://localhost:8080/Server2_0_war_exploded/Servlet_index_charts?chart=4', true);
+            request.send();
+            //3.监听
+            request.onreadystatechange = function () {
+                if (request.readyState === 4 && request.status === 200) {
+                    //声明两个数组对象，一个用于存储横坐标数据，另一个用于存储图表数据
+                    var arrCount = new Array();
+                    var arrName = new Array();
+                    //获取从后端接受的json字符串
+                    var XHR = request.responseText;
+                    //解析json字符串，使其成为json对象
+                    var objs = eval(XHR);
+                    //对图表内的两组数据进行赋值
+                    for (var j = 0; j < objs.length; j++) {
+                        arrCount.push(objs[j].help_count);
+                        arrName.push(objs[j].scenic_name);
+                    }
+                    option = {
+                        grid: {show: 'true', borderWidth: '0'},
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                            },
+
+                            formatter: function (params) {
+                                var tar = params[0];
+                                return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+                            }
+                        },
+
+                        xAxis: [
+                            {
+                                type: 'category',
+                                splitLine: {show: false},
+                                data: arrName,
+                                axisLabel: {
+                                    show: true,
+                                    textStyle: {
+                                        color: '#fff'
+                                    }
+                                }
+
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value',
+                                splitLine: {show: false},
+                                axisLabel: {
+                                    show: true,
+                                    textStyle: {
+                                        color: '#fff'
+                                    }
+                                }
+                            }
+                        ],
+                        series: [
+
+                            {
+                                name: '求助数量',
+                                type: 'bar',
+                                stack: '总量',
+                                itemStyle: {
+                                    normal: {
+                                        color: function (params) {
+
+                                            // build a color map as your need.
+
+                                            var colorList = [
+                                                '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
+                                                '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD',
+                                                '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#26C0C0'
+                                            ];
+                                            return colorList[params.dataIndex]
+                                        }, label: {show: true, position: 'inside'}
+                                    }
+                                },
+                                data: arrCount
+                            }
+                        ]
+                    };
+
+                    myChart.setOption(option);
+                    window.addEventListener('resize', function () {
+                        myChart.resize();
+                    })
+                }
+            }
+        }, 3000);
+
+
+}

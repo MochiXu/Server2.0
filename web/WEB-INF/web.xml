@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+<!--    Serverlet Config-->
+    <servlet>
+        <servlet-name>Servlet_analyze</servlet-name>
+        <servlet-class>Servlet.Analyze.Servlet_analyze</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Servlet_analyze</servlet-name>
+        <url-pattern>/Servlet_analyze</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Servlet_index_tags</servlet-name>
+        <servlet-class>Servlet.Index.Servlet_index_tags</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Servlet_index_tags</servlet-name>
+        <url-pattern>/Servlet_index_tags</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Servlet_index_charts</servlet-name>
+        <servlet-class>Servlet.Index.Servlet_index_charts</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Servlet_index_charts</servlet-name>
+        <url-pattern>/Servlet_index_charts</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Servlet_index_map</servlet-name>
+        <servlet-class>Servlet.Index.Servlet_index_map</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Servlet_index_map</servlet-name>
+        <url-pattern>/Servlet_index_map</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Servlet_monitor</servlet-name>
+        <servlet-class>Servlet.Monitor.Servlet_monitor</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Servlet_monitor</servlet-name>
+        <url-pattern>/Servlet_monitor</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Servlet_publish</servlet-name>
+        <servlet-class>Servlet.Publish.Servlet_publish</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Servlet_publish</servlet-name>
+        <url-pattern>/Servlet_publish</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Servlet_visualization</servlet-name>
+        <servlet-class>Servlet.Visualization.Servlet_visualization</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Servlet_visualization</servlet-name>
+        <url-pattern>/Servlet_visualization</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Update_Data</servlet-name>
+        <servlet-class>Servlet.Database.Update_Data</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Update_Data</servlet-name>
+        <url-pattern>/Update_Data</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Sms_send_code</servlet-name>
+        <servlet-class>Servlet.Service.Sms_send_code</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Sms_send_code</servlet-name>
+        <url-pattern>/Sms_send_code</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Sms_refresh_database</servlet-name>
+        <servlet-class>Servlet.Service.Sms_refresh_database</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Sms_refresh_database</servlet-name>
+        <url-pattern>/Sms_refresh_database</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Comments_receive</servlet-name>
+        <servlet-class>Servlet.Service.Comments_receive</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Comments_receive</servlet-name>
+        <url-pattern>/Comments_receive</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Images_process</servlet-name>
+        <servlet-class>Servlet.Service.Images_process</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Images_process</servlet-name>
+        <url-pattern>/Images_process</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Update_Forecast</servlet-name>
+        <servlet-class>Servlet.Database.Update_Forecast</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Update_Forecast</servlet-name>
+        <url-pattern>/Update_Forecast</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>Person_flow_charts</servlet-name>
+        <servlet-class>Servlet.Service.Person_flow_charts</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Person_flow_charts</servlet-name>
+        <url-pattern>/Person_flow_charts</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Forecast_upload</servlet-name>
+        <servlet-class>Servlet.Service.Forecast_upload</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Forecast_upload</servlet-name>
+        <url-pattern>/Forecast_upload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>User_info_API</servlet-name>
+        <servlet-class>Servlet.QuickAPI.User_info_API</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>User_info_API</servlet-name>
+        <url-pattern>/User_info_API</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Question_API</servlet-name>
+        <servlet-class>Servlet.QuickAPI.Question_API</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Question_API</servlet-name>
+        <url-pattern>/Question_API</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Scenic_flow_API</servlet-name>
+        <servlet-class>Servlet.QuickAPI.Scenic_flow_API</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Scenic_flow_API</servlet-name>
+        <url-pattern>/Scenic_flow_API</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Scenic_info_API</servlet-name>
+        <servlet-class>Servlet.QuickAPI.Scenic_info_API</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Scenic_info_API</servlet-name>
+        <url-pattern>/Scenic_info_API</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Scenic_notice_API</servlet-name>
+        <servlet-class>Servlet.QuickAPI.Scenic_notice_API</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Scenic_notice_API</servlet-name>
+        <url-pattern>/Scenic_notice_API</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Scenic_selected_API</servlet-name>
+        <servlet-class>Servlet.QuickAPI.Scenic_selected_API</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Scenic_selected_API</servlet-name>
+        <url-pattern>/Scenic_selected_API</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>User_comments_API</servlet-name>
+        <servlet-class>Servlet.QuickAPI.User_comments_API</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>User_comments_API</servlet-name>
+        <url-pattern>/User_comments_API</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Edge_Receiver</servlet-name>
+        <servlet-class>Servlet.Service.Edge_Receiver</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Edge_Receiver</servlet-name>
+        <url-pattern>/Edge_Receiver</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Detect_People</servlet-name>
+        <servlet-class>Servlet.Service.Detect_People</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Detect_People</servlet-name>
+        <url-pattern>/Detect_People</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>User_point_judge</servlet-name>
+        <servlet-class>Servlet.QuickAPI.User_point_judge</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>User_point_judge</servlet-name>
+        <url-pattern>/User_point_judge</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Scenic_Search_API</servlet-name>
+        <servlet-class>Servlet.QuickAPI.Scenic_Search_API</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Scenic_Search_API</servlet-name>
+        <url-pattern>/Scenic_Search_API</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>User_location_API</servlet-name>
+        <servlet-class>Servlet.QuickAPI.User_location_API</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>User_location_API</servlet-name>
+        <url-pattern>/User_location_API</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>User_Image_Upload</servlet-name>
+        <servlet-class>Servlet.QuickAPI.User_Image_Upload</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>User_Image_Upload</servlet-name>
+        <url-pattern>/User_Image_Upload</url-pattern>
+    </servlet-mapping>
+
+
+
+</web-app>
